@@ -44,39 +44,40 @@ class View_loginTestCase(SimpleTestCase):
         data1=json.loads(response1.content.decode('utf-8'))
         self.assertDictEqual(content1, data1)
 '''
-
 class View_weiboTestCase(SimpleTestCase):
     def setUp(self):
         self.client=Client()
 
     def test_regist(self):
-        response1 = self.client.get('/verification/weiboLogin/')
-        code=response1.GET.get('code', None)
+        response = self.client.get('/verification/weiboLogin/')
+        code=response.context['code']
         response1 = self.client.get('/verificationn/weibo_check/', {'code':code})
-        content1 = {}
-        data1=json.loads(response1.content.decode('utf-8'))
-        self.assertDictEqual(content1, data1)
+        username=response1.context['username']
+        name='aa'
+        self.assertEqual(username, name)
 
 class View_QQTestCase(SimpleTestCase):
     def setUp(self):
         self.client=Client()
 
     def test_regist(self):
-        response1 = self.client.get('/verification/QQLogin/')
-        code=response1.GET.get('code', None)
+        response = self.client.get('/verification/QQLogin/')
+        code=response.context['code']
         response1 = self.client.get('/verificationn/QQ_check/', {'code':code})
-        content1 = {}
-        data1=json.loads(response1.content.decode('utf-8'))
-        self.assertDictEqual(content1, data1)
+        username=response1.context['username']
+        name='aa'
+        self.assertEqual(username, name)
+
 
 class View_WEIXINTestCase(SimpleTestCase):
     def setUp(self):
         self.client=Client()
 
     def test_regist(self):
-        response1 = self.client.get('/verification/wenxinLogin/')
-        code=response1.GET.get('code', None)
-        response1 = self.client.get('/verificationn/wenxin_check/', {'code':code})
-        content1 = {}
-        data1=json.loads(response1.content.decode('utf-8'))
-        self.assertDictEqual(content1, data1)
+        response= self.client.get('/verification/weixinLogin/')
+        code=response.context['code']
+        response1 = self.client.get('/verificationn/weixin_check/', {'code':code})
+        username=response1.context['username']
+        name='aa'
+        self.assertEqual(username, name)
+

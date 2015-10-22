@@ -7,6 +7,6 @@ urlpatterns = [
     url(r'^weibo_check/', views.weibo_check, name='weibo_check'),
     url(r'^QQLogin/', views.QQLogin, name='QQLogin'),
     url(r'^QQ_check/', views.QQ_check, name='QQ_check'),
-    url(r'^weiboLogin/', views.weiboLogin, name='weiboLogin'),
-    url(r'^weibo_check/', views.weibo_check, name='weibo_check'),
+    url(r'^weixinLogin/', views.weixinLogin, name='weixinLogin'),
+    url(r'^weixin_check/', views.weixin_check, name='weixin_check'),
 ]

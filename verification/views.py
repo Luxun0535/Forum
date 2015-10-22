@@ -32,7 +32,7 @@ def regist(request):
 
 # http://github.liaoxuefeng.com/sinaweibopy/
 # 微博登录"""
-def weiboLogin():
+def weiboLogin(request):
     client = APIClient(app_key=settings.WEIBO_APP_KEY, app_secret=settings.WEIBO_APP_SERCET, redirect_uri=settings.WEIBO_CALLBACK_URL)
     url = client.get_authorize_url()
     return HttpResponseRedirect(url)
@@ -58,7 +58,7 @@ def weibo_check(request):
         user=User(username=uid)
         user.save()
         name=data.get('name')
-        return HttpResponseRedirect()
+        return HttpResponseRedirect('/verification/index/?username='+name)
         # user = SupserWeibo(access_token=access_token, uid=uid, request=request)	  # 实例化超级微博类
         '''
         # 更新数据库
@@ -80,7 +80,7 @@ def weibo_check(request):
 
 # 以上的信息是要自己去申请开发网站时给开发者分配的
 # http://wiki.open.qq.com/wiki/website/使用Authorization_Code获取Access_Token#Step1.EF.BC.9A.E8.8E.B7.E5.8F.96Authorization_Code
-def QQLogin():
+def QQLogin(request):
     url = "https://graph.qq.com/oauth2.0/authorize"
     url1 = url+"?response_type=code&client_id="+settings.QQ_CLIENT_ID+"&redirect_uri="+settings.QQ_REDIRECT_URI+"&state="+settings.QQ_STATE
     return HttpResponse(url1)
@@ -113,18 +113,18 @@ def QQ_check(request):
     req3=urllib2.Request(url3)
     response3=urllib2.urlopen(req3)
     data_dic=json.loads(response3.read())
-    nickname=data_dic['openid']
+    nickname=data_dic['nickname']
 
-    return HttpResponseRedirect()
+    return HttpResponseRedirect('/verification/index/?username='+nickname)
 
-def wenxinLogin():
+def weixinLogin(request):
     # 参数详见https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419316505&token=&lang=zh_CN
     # url="https://open.weixin.qq.com/connect/qrconnect?appid=APP_ID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect"
     url = "https://open.weixin.qq.com/connect/qrconnect"
     url1 = url+"?appid="+settings.WEIXIN_APP_ID+"&redirect_uri="+settings.WEIXIN_REDIRECT_URI+"&response_type=code&scope="+settings.WEIXIN_SCOPE+"&state="+settings.WEIXIN_STATE+"#wechat_redirect"
     return HttpResponse(url1)
 # 微信检验
-def wenxin_check(request):
+def weixin_check(request):
     code = request.GET.get('CODE')     # 如果登录时用户禁止授权将不返回该参数
     state = request.GET.get('state')
     # https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
@@ -152,6 +152,7 @@ def wenxin_check(request):
     resp2 = urllib2.urlopen(req2)
     usrinfo_dic = json.loads(resp2.read())
     unionid = usrinfo_dic['unionid']
+    nickname=usrinfo_dic['nickname']
     user=User(username=unionid)
     user.save()
-    return HttpResponseRedirect()
+    return HttpResponseRedirect('/verification/index/?username='+nickname)
