@@ -58,6 +58,7 @@ def weibo_check(request):
         user=User(username=uid)
         user.save()
         name=data.get('name')
+        return HttpResponseRedirect()
         # user = SupserWeibo(access_token=access_token, uid=uid, request=request)	  # 实例化超级微博类
         '''
         # 更新数据库
@@ -114,6 +115,7 @@ def QQ_check(request):
     data_dic=json.loads(response3.read())
     nickname=data_dic['openid']
 
+    return HttpResponseRedirect()
 
 def wenxinLogin():
     # 参数详见https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419316505&token=&lang=zh_CN
@@ -152,3 +154,4 @@ def wenxin_check(request):
     unionid = usrinfo_dic['unionid']
     user=User(username=unionid)
     user.save()
+    return HttpResponseRedirect()
